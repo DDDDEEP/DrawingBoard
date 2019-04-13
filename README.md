@@ -1,2 +1,2 @@
 # DrawingBoard
-:art: A simple DrawingBoard built by QT5.9
+:art: A simple DrawingBoard built by QT 5.9

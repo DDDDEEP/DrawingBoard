@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/circle.png</file>
+        <file>img/color.png</file>
+        <file>img/cut.png</file>
+        <file>img/delete.png</file>
+        <file>img/ellipse.png</file>
+        <file>img/line.png</file>
+        <file>img/move.png</file>
+        <file>img/rect.png</file>
+        <file>img/reverse.png</file>
+        <file>img/rotate.png</file>
+        <file>img/scale.png</file>
+        <file>img/select.png</file>
+        <file>img/undo.png</file>
+        <file>img/pencil.png</file>
+        <file>img/redo.png</file>
+        <file>img/square.png</file>
+        <file>img/eraser.png</file>
+    </qresource>
+</RCC>

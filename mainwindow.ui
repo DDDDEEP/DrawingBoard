@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>927</width>
+    <height>457</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>DrawingBoard</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(209, 218, 233);</string>
+   </property>
+   <widget class="BoardWidget" name="board" native="true">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>-1</y>
+      <width>581</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>927</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="fileMenu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="actNewFile"/>
+    <addaction name="actOpenFile"/>
+    <addaction name="actSaveFile"/>
+   </widget>
+   <addaction name="fileMenu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actPencil"/>
+   <addaction name="actEraser"/>
+   <addaction name="actLine"/>
+   <addaction name="actEllipse"/>
+   <addaction name="actCircle"/>
+   <addaction name="actRect"/>
+   <addaction name="actSquare"/>
+  </widget>
+  <action name="actPencil">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/pencil.png</normaloff>:/img/img/pencil.png</iconset>
+   </property>
+   <property name="text">
+    <string>画笔(&amp;P)</string>
+   </property>
+   <property name="toolTip">
+    <string>画笔(P)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actNewFile">
+   <property name="text">
+    <string>新建(&amp;N)</string>
+   </property>
+   <property name="toolTip">
+    <string>新建(N)</string>
+   </property>
+  </action>
+  <action name="actOpenFile">
+   <property name="text">
+    <string>打开(&amp;O)</string>
+   </property>
+   <property name="toolTip">
+    <string>打开(O)</string>
+   </property>
+  </action>
+  <action name="actSaveFile">
+   <property name="text">
+    <string>保存(&amp;S)</string>
+   </property>
+   <property name="toolTip">
+    <string>保存(S)</string>
+   </property>
+  </action>
+  <action name="actLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/line.png</normaloff>:/img/img/line.png</iconset>
+   </property>
+   <property name="text">
+    <string>直线(&amp;L)</string>
+   </property>
+   <property name="toolTip">
+    <string>直线(L)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actRect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/rect.png</normaloff>:/img/img/rect.png</iconset>
+   </property>
+   <property name="text">
+    <string>矩形(&amp;R)</string>
+   </property>
+   <property name="toolTip">
+    <string>矩形(R)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actCircle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/circle.png</normaloff>:/img/img/circle.png</iconset>
+   </property>
+   <property name="text">
+    <string>圆(&amp;C)</string>
+   </property>
+   <property name="toolTip">
+    <string>圆(C)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actEllipse">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/ellipse.png</normaloff>:/img/img/ellipse.png</iconset>
+   </property>
+   <property name="text">
+    <string>椭圆(&amp;I)</string>
+   </property>
+   <property name="toolTip">
+    <string>椭圆(I)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actSquare">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/square.png</normaloff>:/img/img/square.png</iconset>
+   </property>
+   <property name="text">
+    <string>正方形(&amp;Q)</string>
+   </property>
+   <property name="toolTip">
+    <string>正方形(Q)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actEraser">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/eraser.png</normaloff>:/img/img/eraser.png</iconset>
+   </property>
+   <property name="text">
+    <string>橡皮擦(&amp;E)</string>
+   </property>
+   <property name="toolTip">
+    <string>橡皮擦(E)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>BoardWidget</class>
+   <extends>QWidget</extends>
+   <header>boardwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="src.qrc"/>
+ </resources>
+ <connections/>
+ <slots>
+  <slot>slot1()</slot>
+ </slots>
+</ui>

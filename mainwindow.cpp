@@ -1,25 +1,57 @@
-﻿#include <QDebug>
+﻿#include <string>
+#include <sstream>
+#include <QDebug>
+#include <QLabel>
+#include <QSpinBox>
+#include <QColorDialog>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    labelPermanent(nullptr),
+    labelText(nullptr),
+    spinBoxColor(nullptr)
 {
     ui->setupUi(this);
-//    connect(ui->actPencil, SIGNAL(triggered(bool)), this, SLOT(on_actPencil_triggered(bool)));
-//    connect(ui->actLine, SIGNAL(triggered(bool)), this, SLOT(on_actLine_triggered(bool)));
-//    connect(ui->mainToolBar, SIGNAL(actionTriggered(QAction*)), this, SLOT(handleToolBar(QAction*)));
+    this->createMainToolBar(); // 动态创建部分工具栏内容
+    setMouseTracking(true);
+    ui->centralWidget->setMouseTracking(true); // 开启鼠标追踪
+
+    // 更新状态栏窗口大小信息
+    std::ostringstream message;
+    message << ui->boardWidget->width() << " x " << ui->boardWidget->height();
+    setPermanentMessage(QString::fromStdString(message.str()));
+
+    connect(spinBoxColor, SIGNAL(valueChanged(int)), this, SLOT(custom_spinBoxColor_valueChanged(int)));
+    connect(ui->boardWidget, SIGNAL(statusEvent(QString)), this, SLOT(setStatusBarText(QString)));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete labelPermanent;
+    delete labelText;
+    delete spinBoxColor;
+}
+
+void MainWindow::createMainToolBar()
+{
+    labelText = new QLabel;
+    labelText->setText(QStringLiteral("线条大小:"));
+    labelText->setIndent(10);
+    ui->mainToolBar->addWidget(labelText);
+
+    spinBoxColor = new QSpinBox;
+    spinBoxColor->setRange(1, 10);
+    spinBoxColor->setFixedWidth(50);
+    ui->mainToolBar->addWidget(spinBoxColor);
 }
 
 void MainWindow::resetActionTool()
 {
-    switch(ui->board->getPaintType())
+    switch(ui->boardWidget->paintType())
     {
     case PaintType::NONE:
         break;
@@ -44,18 +76,25 @@ void MainWindow::resetActionTool()
     case PaintType::ERASER:
         ui->actEraser->setChecked(false);
         break;
-    default:
-        break;
     }
+}
+
+void MainWindow::setPermanentMessage(const QString &s)
+{
+    if (labelPermanent == nullptr) {
+        labelPermanent = new QLabel;
+        ui->statusBar->addPermanentWidget(labelPermanent);
+    }
+    labelPermanent->setText(s);
 }
 
 void MainWindow::on_actPencil_triggered(bool checked)
 {
     if (checked) {
         resetActionTool();
-        ui->board->setPaintType(PaintType::PENCIL);
+        ui->boardWidget->setPaintType(PaintType::PENCIL);
     } else {
-        ui->board->setPaintType(PaintType::NONE);
+        ui->boardWidget->setPaintType(PaintType::NONE);
     }
 }
 
@@ -63,9 +102,9 @@ void MainWindow::on_actEraser_triggered(bool checked)
 {
     if (checked) {
         resetActionTool();
-        ui->board->setPaintType(PaintType::ERASER);
+        ui->boardWidget->setPaintType(PaintType::ERASER);
     } else {
-        ui->board->setPaintType(PaintType::NONE);
+        ui->boardWidget->setPaintType(PaintType::NONE);
     }
 }
 
@@ -73,9 +112,9 @@ void MainWindow::on_actLine_triggered(bool checked)
 {
     if (checked) {
         resetActionTool();
-        ui->board->setPaintType(PaintType::LINE);
+        ui->boardWidget->setPaintType(PaintType::LINE);
     } else {
-        ui->board->setPaintType(PaintType::NONE);
+        ui->boardWidget->setPaintType(PaintType::NONE);
     }
 }
 
@@ -83,9 +122,9 @@ void MainWindow::on_actEllipse_triggered(bool checked)
 {
     if (checked) {
         resetActionTool();
-        ui->board->setPaintType(PaintType::ELLIPSE);
+        ui->boardWidget->setPaintType(PaintType::ELLIPSE);
     } else {
-        ui->board->setPaintType(PaintType::NONE);
+        ui->boardWidget->setPaintType(PaintType::NONE);
     }
 }
 
@@ -93,9 +132,9 @@ void MainWindow::on_actCircle_triggered(bool checked)
 {
     if (checked) {
         resetActionTool();
-        ui->board->setPaintType(PaintType::CIRCLE);
+        ui->boardWidget->setPaintType(PaintType::CIRCLE);
     } else {
-        ui->board->setPaintType(PaintType::NONE);
+        ui->boardWidget->setPaintType(PaintType::NONE);
     }
 }
 
@@ -103,9 +142,9 @@ void MainWindow::on_actRect_triggered(bool checked)
 {
     if (checked) {
         resetActionTool();
-        ui->board->setPaintType(PaintType::RECT);
+        ui->boardWidget->setPaintType(PaintType::RECT);
     } else {
-        ui->board->setPaintType(PaintType::NONE);
+        ui->boardWidget->setPaintType(PaintType::NONE);
     }
 }
 
@@ -113,8 +152,34 @@ void MainWindow::on_actSquare_triggered(bool checked)
 {
     if (checked) {
         resetActionTool();
-        ui->board->setPaintType(PaintType::SQUARE);
+        ui->boardWidget->setPaintType(PaintType::SQUARE);
     } else {
-        ui->board->setPaintType(PaintType::NONE);
+        ui->boardWidget->setPaintType(PaintType::NONE);
     }
+}
+
+void MainWindow::on_actColor_triggered(bool)
+{
+    QColorDialog color;
+    ui->boardWidget->setPenColor(color.getRgba());
+}
+
+void MainWindow::on_actFill_triggered(bool checked)
+{
+    ui->boardWidget->setBrushMode(checked);
+}
+
+void MainWindow::on_undo_triggered(bool)
+{
+
+}
+
+void MainWindow::custom_spinBoxColor_valueChanged(int value)
+{
+    ui->boardWidget->setPenWidth(value);
+}
+
+void MainWindow::setStatusBarText(const QString& s)
+{
+    statusBar()->showMessage(s);
 }

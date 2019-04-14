@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>927</width>
-    <height>457</height>
+    <width>700</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,14 +20,17 @@
    <property name="styleSheet">
     <string notr="true">background-color:rgb(209, 218, 233);</string>
    </property>
-   <widget class="BoardWidget" name="board" native="true">
+   <widget class="BoardWidget" name="boardWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>-1</x>
-      <y>-1</y>
-      <width>581</width>
-      <height>311</height>
+      <x>0</x>
+      <y>0</y>
+      <width>600</width>
+      <height>300</height>
      </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:white;</string>
@@ -39,7 +42,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>927</width>
+     <width>700</width>
      <height>21</height>
     </rect>
    </property>
@@ -68,6 +71,19 @@
    <addaction name="actCircle"/>
    <addaction name="actRect"/>
    <addaction name="actSquare"/>
+   <addaction name="actFill"/>
+   <addaction name="separator"/>
+   <addaction name="actCut"/>
+   <addaction name="actReverse"/>
+   <addaction name="actMove"/>
+   <addaction name="actRotate"/>
+   <addaction name="actScale"/>
+   <addaction name="actDelete"/>
+   <addaction name="separator"/>
+   <addaction name="actUndo"/>
+   <addaction name="actRedo"/>
+   <addaction name="separator"/>
+   <addaction name="actColor"/>
   </widget>
   <action name="actPencil">
    <property name="checkable">
@@ -83,6 +99,9 @@
    <property name="toolTip">
     <string>画笔(P)</string>
    </property>
+   <property name="statusTip">
+    <string>画笔(P)</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
    </property>
@@ -94,6 +113,9 @@
    <property name="toolTip">
     <string>新建(N)</string>
    </property>
+   <property name="statusTip">
+    <string>新建(N)</string>
+   </property>
   </action>
   <action name="actOpenFile">
    <property name="text">
@@ -102,12 +124,18 @@
    <property name="toolTip">
     <string>打开(O)</string>
    </property>
+   <property name="statusTip">
+    <string>打开(O)</string>
+   </property>
   </action>
   <action name="actSaveFile">
    <property name="text">
     <string>保存(&amp;S)</string>
    </property>
    <property name="toolTip">
+    <string>保存(S)</string>
+   </property>
+   <property name="statusTip">
     <string>保存(S)</string>
    </property>
   </action>
@@ -123,6 +151,9 @@
     <string>直线(&amp;L)</string>
    </property>
    <property name="toolTip">
+    <string>直线(L)</string>
+   </property>
+   <property name="statusTip">
     <string>直线(L)</string>
    </property>
    <property name="shortcut">
@@ -143,6 +174,9 @@
    <property name="toolTip">
     <string>矩形(R)</string>
    </property>
+   <property name="statusTip">
+    <string>矩形(R)</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
    </property>
@@ -159,6 +193,9 @@
     <string>圆(&amp;C)</string>
    </property>
    <property name="toolTip">
+    <string>圆(C)</string>
+   </property>
+   <property name="statusTip">
     <string>圆(C)</string>
    </property>
    <property name="shortcut">
@@ -179,6 +216,9 @@
    <property name="toolTip">
     <string>椭圆(I)</string>
    </property>
+   <property name="statusTip">
+    <string>椭圆(I)</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
    </property>
@@ -195,6 +235,9 @@
     <string>正方形(&amp;Q)</string>
    </property>
    <property name="toolTip">
+    <string>正方形(Q)</string>
+   </property>
+   <property name="statusTip">
     <string>正方形(Q)</string>
    </property>
    <property name="shortcut">
@@ -215,8 +258,197 @@
    <property name="toolTip">
     <string>橡皮擦(E)</string>
    </property>
+   <property name="statusTip">
+    <string>橡皮擦(E)</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actFill">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/fill.png</normaloff>:/img/img/fill.png</iconset>
+   </property>
+   <property name="text">
+    <string>填充(&amp;F)</string>
+   </property>
+   <property name="toolTip">
+    <string>填充(F)</string>
+   </property>
+   <property name="statusTip">
+    <string>填充(F)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actColor">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/color.png</normaloff>:/img/img/color.png</iconset>
+   </property>
+   <property name="text">
+    <string>颜色(&amp;O)</string>
+   </property>
+   <property name="toolTip">
+    <string>颜色(O)</string>
+   </property>
+   <property name="statusTip">
+    <string>颜色(O)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actCut">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/cut.png</normaloff>:/img/img/cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>裁剪(&amp;T)</string>
+   </property>
+   <property name="toolTip">
+    <string>裁剪(T)</string>
+   </property>
+   <property name="statusTip">
+    <string>裁剪(T)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actMove">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/move.png</normaloff>:/img/img/move.png</iconset>
+   </property>
+   <property name="text">
+    <string>移动(&amp;M)</string>
+   </property>
+   <property name="toolTip">
+    <string>移动(M)</string>
+   </property>
+   <property name="statusTip">
+    <string>移动(M)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actRotate">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/rotate.png</normaloff>:/img/img/rotate.png</iconset>
+   </property>
+   <property name="text">
+    <string>旋转(&amp;R)</string>
+   </property>
+   <property name="toolTip">
+    <string>旋转(R)</string>
+   </property>
+   <property name="statusTip">
+    <string>旋转(R)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actScale">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/scale.png</normaloff>:/img/img/scale.png</iconset>
+   </property>
+   <property name="text">
+    <string>拉伸(&amp;E)</string>
+   </property>
+   <property name="toolTip">
+    <string>拉伸(E)</string>
+   </property>
+   <property name="statusTip">
+    <string>拉伸(E)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actDelete">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/delete.png</normaloff>:/img/img/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>删除(&amp;D)</string>
+   </property>
+   <property name="toolTip">
+    <string>删除(D)</string>
+   </property>
+   <property name="statusTip">
+    <string>删除(D)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actUndo">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/undo.png</normaloff>:/img/img/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>撤销(&amp;Z)</string>
+   </property>
+   <property name="toolTip">
+    <string>撤销(Z)</string>
+   </property>
+   <property name="statusTip">
+    <string>撤销(Z)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actRedo">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/redo.png</normaloff>:/img/img/redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>重做(&amp;Y)</string>
+   </property>
+   <property name="toolTip">
+    <string>重做(Y)</string>
+   </property>
+   <property name="statusTip">
+    <string>重做(Y)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actReverse">
+   <property name="icon">
+    <iconset resource="src.qrc">
+     <normaloff>:/img/img/reverse.png</normaloff>:/img/img/reverse.png</iconset>
+   </property>
+   <property name="text">
+    <string>反选(&amp;B)</string>
+   </property>
+   <property name="toolTip">
+    <string>反选(B)</string>
+   </property>
+   <property name="statusTip">
+    <string>反选(B)</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
    </property>
   </action>
  </widget>

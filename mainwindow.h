@@ -2,20 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QAction>
+#include <QLabel>
+#include <QSpinBox>
 #include <QMainWindow>
-
-// 绘制类型
-enum PaintType
-{
-    NONE,
-    PENCIL,
-    LINE,
-    ELLIPSE,
-    CIRCLE,
-    RECT,
-    SQUARE,
-    ERASER
-};
+#include "global.h"
 
 namespace Ui {
 class MainWindow;
@@ -32,8 +22,14 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    
-    void resetActionTool(); // 重置当前所选的工具按钮
+
+    void createMainToolBar();                 // ui编辑器下只能向主工具栏添加action，其它组件主要动态添加
+    void resetActionTool();                   // 重置当前所选的工具按钮
+    void setPermanentMessage(const QString&); // 设置状态栏的永久信息
+
+    QLabel* labelPermanent; // 状态栏右下角永久信息
+    QLabel* labelText;      // 字体大小标签
+    QSpinBox* spinBoxColor; // 字体大小改变框
 
 private slots:
     void on_actPencil_triggered(bool);
@@ -43,6 +39,12 @@ private slots:
     void on_actCircle_triggered(bool);
     void on_actRect_triggered(bool);
     void on_actSquare_triggered(bool);
+    void on_actColor_triggered(bool);
+    void on_actFill_triggered(bool);
+    void on_undo_triggered(bool);
+    void custom_spinBoxColor_valueChanged(int);
+
+    void setStatusBarText(const QString&); // 子组件改变状态栏的接口
 
 };
 

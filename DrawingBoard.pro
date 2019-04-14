@@ -31,7 +31,8 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    boardwidget.h
+    boardwidget.h \
+    global.h
 
 FORMS += \
         mainwindow.ui

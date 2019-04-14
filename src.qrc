@@ -17,5 +17,6 @@
         <file>img/redo.png</file>
         <file>img/square.png</file>
         <file>img/eraser.png</file>
+        <file>img/fill.png</file>
     </qresource>
 </RCC>

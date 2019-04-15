@@ -169,11 +169,6 @@ void MainWindow::on_actFill_triggered(bool checked)
     ui->boardWidget->setBrushMode(checked);
 }
 
-void MainWindow::on_undo_triggered(bool)
-{
-
-}
-
 void MainWindow::custom_spinBoxColor_valueChanged(int value)
 {
     ui->boardWidget->setPenWidth(value);

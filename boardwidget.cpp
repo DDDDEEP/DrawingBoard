@@ -2,11 +2,16 @@
 #include <sstream>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QFileDialog>
+#include <stack>
 #include "global.h"
 #include "boardwidget.h"
 
+#include <QDebug>
+#define printf qDebug
+
 BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
-    theImage(QImage(600, 300, QImage::Format_RGB32)),
+    theImage(QImage(1000, 1000, QImage::Format_RGB32)),
     backgroundColor(qRgb(255,255,255)),
     thePen(Qt::black, 1, Qt::SolidLine),
     theBrush(Qt::transparent),
@@ -19,7 +24,7 @@ BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
     filling(false)
 {
     theImage.fill(backgroundColor);
-    this->setFixedSize(600, 300);
+    this->setFixedSize(1000, 1000);
     setMouseTracking(true);
 }
 
@@ -33,6 +38,7 @@ void BoardWidget::paint(QImage& qImage)
         width = static_cast<int>((endPoint.x() - startX) / theScale),
         height = static_cast<int>((endPoint.y() - startY) / theScale); // 用于绘制特殊图形
 
+    printf("inpaint %d", history_redo.size());
     switch(thePaintType)
     {
     case PaintType::NONE:
@@ -66,6 +72,13 @@ void BoardWidget::paint(QImage& qImage)
     case PaintType::CIRCLE:
         painter.drawEllipse(startX, startY, width, (height > 0) ? abs(width) : -abs(width));
         break;
+    }
+    if(history_undo.size()==0 || history_undo.top()!=theImage)
+    {
+        printf("undopush %d", history_redo.size());
+        history_undo.push(theImage);
+        while(!history_redo.empty())
+            history_redo.pop();
     }
     update(); // 更新界面，以此触发重绘事件
 }
@@ -140,4 +153,62 @@ void BoardWidget::mouseReleaseEvent(QMouseEvent* event)
         drawing = false;
         paint(theImage);
     }
+}
+
+void BoardWidget::saveImage()
+{
+    QString filename = QFileDialog::getSaveFileName(this,
+            tr("Save Image"),
+            "",
+            tr("*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
+        if(filename.isEmpty())
+        {
+            return;
+        }
+        else
+        {
+            theImage.save(filename); //保存图像
+        }
+}
+
+void BoardWidget::openImage()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+            tr("Open Image"),
+            "",
+            tr("*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
+        if(filename.isEmpty())
+        {
+            return;
+        }
+        else
+        {
+            theImage.load(filename); //保存图像
+        }
+}
+
+void BoardWidget::Undo()
+{
+    if(history_undo.size()<=1)
+    {
+        return;
+    }
+    history_redo.push(history_undo.top());
+    history_undo.pop();
+    theImage = history_undo.top();
+    update();
+}
+
+void BoardWidget::Redo()
+{
+    printf("redo %d", history_redo.size());
+    if(history_redo.size()==0)
+    {
+        return;
+    }
+    theImage = history_redo.top();
+    history_undo.push(history_redo.top());
+    history_redo.pop();
+    printf("pop %d", history_redo.size());
+    update();
 }

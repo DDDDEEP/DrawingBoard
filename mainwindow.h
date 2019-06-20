@@ -41,9 +41,15 @@ private slots:
     void on_actSquare_triggered(bool);
     void on_actColor_triggered(bool);
     void on_actFill_triggered(bool);
+    void on_actSaveFile_triggered(bool);
+    void on_actOpenFile_triggered(bool);
+    void on_actUndo_triggered(bool);
+    void on_actRedo_triggered(bool);
     void custom_spinBoxColor_valueChanged(int);
 
     void setStatusBarText(const QString&); // 子组件改变状态栏的接口
+
+
 
 };
 

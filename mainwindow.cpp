@@ -178,3 +178,23 @@ void MainWindow::setStatusBarText(const QString& s)
 {
     statusBar()->showMessage(s);
 }
+
+void MainWindow::on_actSaveFile_triggered(bool)
+{
+    ui->boardWidget->saveImage();
+}
+
+void MainWindow::on_actOpenFile_triggered(bool)
+{
+    ui->boardWidget->openImage();
+}
+
+void MainWindow::on_actUndo_triggered(bool)
+{
+    ui->boardWidget->Undo();
+}
+
+void MainWindow::on_actRedo_triggered(bool)
+{
+    ui->boardWidget->Redo();
+}

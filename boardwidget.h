@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPen>
 #include <QPainter>
+#include <stack>
 #include "global.h"
 
 class BoardWidget : public QWidget
@@ -30,12 +31,18 @@ public:
     PaintType paintType() const { return thePaintType; }
     void setPaintType(const PaintType& type) { thePaintType = type; }
 
+    void saveImage();              // 保存绘制图像
+    void openImage();              // 打开已有的图像
+    void Undo();                   // 撤回上一步绘制操作
+    void Redo();
+
 protected:
     void paint(QImage&);                  // 手动调用的绘制函数
     void paintEvent(QPaintEvent*);        // 重绘事件
     void mousePressEvent(QMouseEvent*);   // 鼠标按下事件
     void mouseMoveEvent(QMouseEvent*);    // 鼠标移动事件
     void mouseReleaseEvent(QMouseEvent*); // 鼠标释放事件
+
 
 private:
     const int halfEraserSize = 8;
@@ -56,6 +63,9 @@ private:
     bool modified; // 文件是否被修改
     bool drawing;  // 是否正在绘制
     bool filling;  // 是否为填充模式
+
+    std::stack<QImage> history_undo;
+    std::stack<QImage> history_redo;
 
 signals:
     void statusEvent(const QString&);

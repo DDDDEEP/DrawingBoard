@@ -21,7 +21,8 @@ BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
     theAngle(0),
     modified(false),
     drawing(false),
-    filling(false)
+    filling(false),
+    pressing(false)
 {
     theImage.fill(backgroundColor);
     this->setFixedSize(1000, 1000);
@@ -73,7 +74,7 @@ void BoardWidget::paint(QImage& qImage)
         painter.drawEllipse(startX, startY, width, (height > 0) ? abs(width) : -abs(width));
         break;
     }
-    if(history_undo.size()==0 || history_undo.top()!=theImage)
+    if (history_undo.size() == 0 || (!pressing && history_undo.top() != theImage))
     {
         printf("undopush %d", history_redo.size());
         history_undo.push(theImage);
@@ -122,6 +123,7 @@ void BoardWidget::mousePressEvent(QMouseEvent* event)
     if (event->button() == Qt::LeftButton) {
         startPoint = event->pos();
         drawing = true;
+        pressing = true;
     }
 }
 
@@ -151,6 +153,7 @@ void BoardWidget::mouseReleaseEvent(QMouseEvent* event)
     {
         endPoint = event->pos();
         drawing = false;
+        pressing = false;
         paint(theImage);
     }
 }
@@ -160,7 +163,7 @@ void BoardWidget::saveImage()
     QString filename = QFileDialog::getSaveFileName(this,
             tr("Save Image"),
             "",
-            tr("*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
+            tr("*;;*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
         if(filename.isEmpty())
         {
             return;
@@ -176,7 +179,7 @@ void BoardWidget::openImage()
     QString filename = QFileDialog::getOpenFileName(this,
             tr("Open Image"),
             "",
-            tr("*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
+            tr("*;;*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
         if(filename.isEmpty())
         {
             return;

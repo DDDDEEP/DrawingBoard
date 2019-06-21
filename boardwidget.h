@@ -63,6 +63,7 @@ private:
     bool modified; // 文件是否被修改
     bool drawing;  // 是否正在绘制
     bool filling;  // 是否为填充模式
+    bool pressing; // 鼠标是否按下去
 
     std::stack<QImage> history_undo;
     std::stack<QImage> history_redo;

@@ -31,9 +31,10 @@ public:
     PaintType paintType() const { return thePaintType; }
     void setPaintType(const PaintType& type) { thePaintType = type; }
 
-    void saveImage();              // 保存绘制图像
-    void openImage();              // 打开已有的图像
-    void Undo();                   // 撤回上一步绘制操作
+    void fillColor(const QPoint &point); // 油漆桶功能
+    void saveImage();                    // 保存绘制图像
+    void openImage();                    // 打开已有的图像
+    void Undo();                         // 撤回上一步绘制操作
     void Redo();
 
 protected:
@@ -67,6 +68,7 @@ private:
 
     std::stack<QImage> history_undo;
     std::stack<QImage> history_redo;
+
 
 signals:
     void statusEvent(const QString&);

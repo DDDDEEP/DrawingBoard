@@ -76,6 +76,9 @@ void MainWindow::resetActionTool()
     case PaintType::ERASER:
         ui->actEraser->setChecked(false);
         break;
+    case PaintType::FILL:
+        ui->actFill->setChecked(false);
+        break;
     }
 }
 
@@ -166,7 +169,12 @@ void MainWindow::on_actColor_triggered(bool)
 
 void MainWindow::on_actFill_triggered(bool checked)
 {
-    ui->boardWidget->setBrushMode(checked);
+    if (checked) {
+        resetActionTool();
+        ui->boardWidget->setPaintType(PaintType::FILL);
+    } else {
+        ui->boardWidget->setPaintType(PaintType::NONE);
+    }
 }
 
 void MainWindow::custom_spinBoxColor_valueChanged(int value)

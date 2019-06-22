@@ -1,9 +1,12 @@
 ﻿#include <string>
+#include <vector>
 #include <sstream>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QFileDialog>
 #include <stack>
+#include <queue>
+#include <utility>
 #include "global.h"
 #include "boardwidget.h"
 
@@ -29,6 +32,54 @@ BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
     setMouseTracking(true);
 }
 
+void BoardWidget::fillColor(const QPoint &point)
+{
+    int pointX = static_cast<int>(point.x() / theScale),
+        pointY = static_cast<int>(point.y() / theScale);
+
+    std::queue<std::pair<int, int>> points;
+    std::vector<std::pair<int, int>> tempPoints;
+    points.push({pointX, pointY});
+
+    QColor pointColor = theImage.pixelColor(point.x(), point.y());
+    while (!points.empty() && points.size() < 100)
+    {
+        int frontPointX = points.front().first,
+            frontPointY = points.front().second;
+        printf("%d, %d", frontPointX, frontPointY);
+        if (theImage.pixelColor(frontPointX, frontPointY) == thePen.color())
+        {
+            points.pop();
+            continue;
+        }
+
+        theImage.setPixelColor(frontPointX, frontPointY, thePen.color());
+
+        tempPoints.clear();
+        tempPoints.push_back({frontPointX, frontPointY - 1});
+        tempPoints.push_back({frontPointX + 1, frontPointY});
+        tempPoints.push_back({frontPointX, frontPointY + 1});
+        tempPoints.push_back({frontPointX - 1, frontPointY});
+
+        for (auto tp : tempPoints)
+        {
+            if (tp.first < 0 || tp.first > theImage.height() - 1
+                || tp.second < 0 || tp.second > theImage.width() - 1)
+            {
+                continue;
+            }
+
+            QColor pColor = theImage.pixelColor(tp.first, tp.second);
+            if (pColor == pointColor)
+            {
+                points.push(tp);
+            }
+        }
+        printf("%d", points.size());
+        points.pop();
+    }
+}
+
 void BoardWidget::paint(QImage& qImage)
 {
     QPainter painter(&qImage);
@@ -39,7 +90,6 @@ void BoardWidget::paint(QImage& qImage)
         width = static_cast<int>((endPoint.x() - startX) / theScale),
         height = static_cast<int>((endPoint.y() - startY) / theScale); // 用于绘制特殊图形
 
-    printf("inpaint %d", history_redo.size());
     switch(thePaintType)
     {
     case PaintType::NONE:
@@ -73,10 +123,12 @@ void BoardWidget::paint(QImage& qImage)
     case PaintType::CIRCLE:
         painter.drawEllipse(startX, startY, width, (height > 0) ? abs(width) : -abs(width));
         break;
+    case PaintType::FILL:
+        fillColor(startPoint);
+        break;
     }
     if (history_undo.size() == 0 || (!pressing && history_undo.top() != theImage))
     {
-        printf("undopush %d", history_redo.size());
         history_undo.push(theImage);
         while(!history_redo.empty())
             history_redo.pop();
@@ -164,14 +216,14 @@ void BoardWidget::saveImage()
             tr("Save Image"),
             "",
             tr("*;;*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
-        if(filename.isEmpty())
-        {
-            return;
-        }
-        else
-        {
-            theImage.save(filename); //保存图像
-        }
+    if (filename.isEmpty())
+    {
+        return;
+    }
+    else
+    {
+        theImage.save(filename); //保存图像
+    }
 }
 
 void BoardWidget::openImage()
@@ -180,14 +232,14 @@ void BoardWidget::openImage()
             tr("Open Image"),
             "",
             tr("*;;*.bmp;; *.png;; *.jpg;; *.tif;; *.GIF")); //选择路径
-        if(filename.isEmpty())
-        {
-            return;
-        }
-        else
-        {
-            theImage.load(filename); //保存图像
-        }
+    if (filename.isEmpty())
+    {
+        return;
+    }
+    else
+    {
+        theImage.load(filename); //保存图像
+    }
 }
 
 void BoardWidget::Undo()
@@ -204,7 +256,6 @@ void BoardWidget::Undo()
 
 void BoardWidget::Redo()
 {
-    printf("redo %d", history_redo.size());
     if(history_redo.size()==0)
     {
         return;
@@ -212,6 +263,5 @@ void BoardWidget::Redo()
     theImage = history_redo.top();
     history_undo.push(history_redo.top());
     history_redo.pop();
-    printf("pop %d", history_redo.size());
     update();
 }

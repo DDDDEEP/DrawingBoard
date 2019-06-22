@@ -10,6 +10,7 @@ enum PaintType
     ELLIPSE,
     CIRCLE,
     RECT,
-    SQUARE
+    SQUARE,
+    FILL
 };
 #endif // GLOBAL_H

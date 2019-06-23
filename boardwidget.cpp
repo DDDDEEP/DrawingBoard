@@ -34,49 +34,54 @@ BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
 
 void BoardWidget::fillColor(const QPoint &point)
 {
+
+    printf("theScale%f", theScale);
     int pointX = static_cast<int>(point.x() / theScale),
         pointY = static_cast<int>(point.y() / theScale);
 
     std::queue<std::pair<int, int>> points;
-    std::vector<std::pair<int, int>> tempPoints;
+
+    std::vector<std::vector<bool> > mark(static_cast<unsigned long long>(theImage.height()), std::vector<bool>(static_cast<unsigned long long>(theImage.width()), false));
     points.push({pointX, pointY});
+    mark[pointX][pointY] = true;
+
+
+    const static int DX[4] = {-1, 1, 0, 0};
+    const static int DY[4] = {0, 0, -1, 1};
+
 
     QColor pointColor = theImage.pixelColor(point.x(), point.y());
-    while (!points.empty() && points.size() < 100)
+    while (!points.empty())
     {
         int frontPointX = points.front().first,
             frontPointY = points.front().second;
-        printf("%d, %d", frontPointX, frontPointY);
-        if (theImage.pixelColor(frontPointX, frontPointY) == thePen.color())
-        {
-            points.pop();
-            continue;
-        }
+
+
+
+
+        points.pop();
+
 
         theImage.setPixelColor(frontPointX, frontPointY, thePen.color());
 
-        tempPoints.clear();
-        tempPoints.push_back({frontPointX, frontPointY - 1});
-        tempPoints.push_back({frontPointX + 1, frontPointY});
-        tempPoints.push_back({frontPointX, frontPointY + 1});
-        tempPoints.push_back({frontPointX - 1, frontPointY});
 
-        for (auto tp : tempPoints)
+        for(int i = 0; i < 4; ++i)
         {
-            if (tp.first < 0 || tp.first > theImage.height() - 1
-                || tp.second < 0 || tp.second > theImage.width() - 1)
+            int newX = frontPointX + DX[i];
+            int newY = frontPointY + DY[i];
+            if(newX >= 0 && newX < theImage.height() && newY >= 0 && newY < theImage.width())
             {
-                continue;
-            }
-
-            QColor pColor = theImage.pixelColor(tp.first, tp.second);
-            if (pColor == pointColor)
-            {
-                points.push(tp);
+                //inRange
+                if(!mark[newX][newY])
+                {
+                    if(theImage.pixelColor(newX, newY) == pointColor)
+                    {
+                        points.push({newX, newY});
+                        mark[newX][newY] = true;
+                    }
+                }
             }
         }
-        printf("%d", points.size());
-        points.pop();
     }
 }
 

@@ -14,7 +14,7 @@
 #define printf qDebug
 
 BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
-    theImage(QImage(1000, 1000, QImage::Format_RGB32)),
+    theImage(QImage(1000, 600, QImage::Format_RGB32)),
     backgroundColor(qRgb(255,255,255)),
     thePen(Qt::black, 1, Qt::SolidLine),
     theBrush(Qt::transparent),
@@ -36,7 +36,6 @@ BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
 void BoardWidget::newFile()
 {
 
-    //theImage = QImage(1000, 1000, QImage::Format_RGB32);
     theImage.fill(qRgb(255,255,255));
     update();
 

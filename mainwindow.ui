@@ -54,7 +54,16 @@
     <addaction name="actOpenFile"/>
     <addaction name="actSaveFile"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>编辑</string>
+    </property>
+    <addaction name="actionactInvert"/>
+    <addaction name="actionactGray"/>
+    <addaction name="actionactMosaic"/>
+   </widget>
    <addaction name="fileMenu"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
@@ -475,9 +484,36 @@
     <bool>false</bool>
    </property>
   </action>
-  <action name="action">
+  <action name="actionactInvert">
    <property name="text">
-    <string>--</string>
+    <string>反色</string>
+   </property>
+   <property name="statusTip">
+    <string>反色</string>
+   </property>
+  </action>
+  <action name="actionactBinary">
+   <property name="text">
+    <string>二值化</string>
+   </property>
+   <property name="statusTip">
+    <string>二值化</string>
+   </property>
+  </action>
+  <action name="actionactGray">
+   <property name="text">
+    <string>灰度化</string>
+   </property>
+   <property name="statusTip">
+    <string>灰度化</string>
+   </property>
+  </action>
+  <action name="actionactMosaic">
+   <property name="text">
+    <string>马赛克</string>
+   </property>
+   <property name="statusTip">
+    <string>马赛克</string>
    </property>
   </action>
  </widget>

@@ -31,6 +31,7 @@ private:
     QLabel* labelText;      // 字体大小标签
     QSpinBox* spinBoxColor; // 字体大小改变框
 
+
 private slots:
     void on_actPencil_triggered(bool);
     void on_actEraser_triggered(bool);
@@ -52,6 +53,9 @@ private slots:
 
 
 
+    void on_actionactInvert_triggered(bool checked);
+    void on_actionactGray_triggered(bool checked);
+    void on_actionactMosaic_triggered(bool checked);
 };
 
 #endif // MAINWINDOW_H

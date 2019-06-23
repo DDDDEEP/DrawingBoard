@@ -14,7 +14,7 @@
 #define printf qDebug
 
 BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
-    theImage(QImage(1000, 600, QImage::Format_RGB32)),
+    theImage(QImage(600, 600, QImage::Format_RGB32)),
     backgroundColor(qRgb(255,255,255)),
     thePen(Qt::black, 1, Qt::SolidLine),
     theBrush(Qt::transparent),
@@ -28,7 +28,7 @@ BoardWidget::BoardWidget(QWidget *parent) : QWidget(parent),
     pressing(false)
 {
     theImage.fill(backgroundColor);
-    this->setFixedSize(1000, 1000);
+    this->setFixedSize(600, 600);
     setMouseTracking(true);
 }
 
@@ -42,10 +42,91 @@ void BoardWidget::newFile()
 
 }
 
+void BoardWidget::invert()
+{
+    const int H = theImage.height();
+    const int W = theImage.width();
+    for(int i = 0; i < H; ++i)
+    {
+        for(int j = 0; j < W; ++j)
+        {
+            const QColor& cur = theImage.pixelColor(j, i);
+            const QColor newColor = QColor(0xff - cur.red(), 0xff - cur.green(), 0xff - cur.blue());
+            theImage.setPixelColor(j, i, newColor);
+        }
+    }
+    update();
+
+}
+
+void BoardWidget::gray()
+{
+    const int H = theImage.height();
+    const int W = theImage.width();
+    for(int i = 0; i < H; ++i)
+    {
+        for(int j = 0; j < W; ++j)
+        {
+            const QColor& cur = theImage.pixelColor(j, i);
+            int gray = (cur.red() * 313524 + cur.green() * 615514 + cur.blue() *119538) >> 20;
+            const QColor newColor = QColor(gray, gray, gray);
+            theImage.setPixelColor(j, i, newColor);
+        }
+    }
+    update();
+
+}
+
+void BoardWidget::mosaic()
+{
+    const int H = theImage.height();
+    const int W = theImage.width();
+    const static int DI[4] = {0, 0, 1, 1};
+    const static int DJ[4] = {0, 1, 0, 1};
+    for(int i = 0; i < H; i += 2)
+    {
+        for(int j = 0; j < W; j += 2)
+        {
+            int r = 0;
+            int g = 0;
+            int b = 0;
+            for(int k = 0; k < 4; ++k)
+            {
+                const int newI = i + DI[k];
+                const int newJ = j + DJ[k];
+                if(newI < H && newJ < W)
+                {
+                    const QColor& cur = theImage.pixelColor(newJ, newI);
+                    r += cur.red();
+                    g += cur.green();
+                    b += cur.blue();
+                }
+
+            }
+
+            r >>= 2;
+            g >>= 2;
+            b >>= 2;
+            for(int k = 0; k < 4; ++k)
+            {
+                const int newI = i + DI[k];
+                const int newJ = j + DJ[k];
+                if(newI < H && newJ < W)
+                {
+                    const QColor newColor = QColor(r, g, b);
+                    theImage.setPixelColor(newJ, newI, newColor);
+                }
+
+            }
+
+        }
+    }
+    update();
+}
+
 void BoardWidget::fillColor(const QPoint &point)
 {
 
-    printf("theScale%f", theScale);
     int pointX = static_cast<int>(point.x() / theScale),
         pointY = static_cast<int>(point.y() / theScale);
 

@@ -221,3 +221,20 @@ void MainWindow::on_actNewFile_triggered(bool)
 
     ui->boardWidget->newFile();
 }
+
+
+
+void MainWindow::on_actionactInvert_triggered(bool)
+{
+    ui->boardWidget->invert();
+}
+
+void MainWindow::on_actionactGray_triggered(bool)
+{
+    ui->boardWidget->gray();
+}
+
+void MainWindow::on_actionactMosaic_triggered(bool)
+{
+    ui->boardWidget->mosaic();
+}

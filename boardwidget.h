@@ -42,6 +42,11 @@ public:
     void newFile();         // 清空
 
 
+    void invert();
+    void gray();
+    void mosaic();
+
+
 protected:
     void paint(QImage&);                  // 手动调用的绘制函数
     void paintEvent(QPaintEvent*);        // 重绘事件

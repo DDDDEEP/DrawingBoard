@@ -18,5 +18,6 @@
         <file>img/square.png</file>
         <file>img/eraser.png</file>
         <file>img/fill.png</file>
+        <file>img/cursor_erase.png</file>
     </qresource>
 </RCC>

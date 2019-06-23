@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <QColorDialog>
+#include "boardwidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -51,6 +52,7 @@ void MainWindow::createMainToolBar()
 
 void MainWindow::resetActionTool()
 {
+
     switch(ui->boardWidget->paintType())
     {
     case PaintType::NONE:
@@ -75,6 +77,7 @@ void MainWindow::resetActionTool()
         break;
     case PaintType::ERASER:
         ui->actEraser->setChecked(false);
+        this->setCursor(Qt::ArrowCursor);
         break;
     case PaintType::FILL:
         ui->actFill->setChecked(false);
@@ -106,6 +109,11 @@ void MainWindow::on_actEraser_triggered(bool checked)
     if (checked) {
         resetActionTool();
         ui->boardWidget->setPaintType(PaintType::ERASER);
+        QPixmap pixmap(":/img/img/cursor_erase.png");
+        pixmap = pixmap.scaled(BoardWidget::halfEraserSize * 2, BoardWidget::halfEraserSize * 2);
+
+        QCursor cursor = QCursor(pixmap, BoardWidget::halfEraserSize, BoardWidget::halfEraserSize);
+        this->setCursor(cursor);
     } else {
         ui->boardWidget->setPaintType(PaintType::NONE);
     }
@@ -205,4 +213,11 @@ void MainWindow::on_actUndo_triggered(bool)
 void MainWindow::on_actRedo_triggered(bool)
 {
     ui->boardWidget->Redo();
+}
+
+
+void MainWindow::on_actNewFile_triggered(bool)
+{
+
+    ui->boardWidget->newFile();
 }

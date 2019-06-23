@@ -11,6 +11,9 @@ class BoardWidget : public QWidget
 {
     Q_OBJECT
 public:
+
+    const static int halfEraserSize = 8;
+
     explicit BoardWidget(QWidget *parent = nullptr);
 
     int penWidth() const { return thePen.width(); }
@@ -36,6 +39,8 @@ public:
     void openImage();                    // 打开已有的图像
     void Undo();                         // 撤回上一步绘制操作
     void Redo();
+    void newFile();         // 清空
+
 
 protected:
     void paint(QImage&);                  // 手动调用的绘制函数
@@ -46,7 +51,7 @@ protected:
 
 
 private:
-    const int halfEraserSize = 8;
+
 
     QImage theImage;             // 绘图对象
     QImage tempImage;            // 临时绘图区，用于需要临时显示绘制效果的操作，如特殊图形的绘制

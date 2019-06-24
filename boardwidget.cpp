@@ -81,42 +81,44 @@ void BoardWidget::mosaic()
 {
     const int H = theImage.height();
     const int W = theImage.width();
-    const static int DI[4] = {0, 0, 1, 1};
-    const static int DJ[4] = {0, 1, 0, 1};
-    for(int i = 0; i < H; i += 2)
+    for(int i = 0; i < H; i += 8)
     {
-        for(int j = 0; j < W; j += 2)
+        for(int j = 0; j < W; j += 8)
         {
             int r = 0;
             int g = 0;
             int b = 0;
-            for(int k = 0; k < 4; ++k)
+            for(int k1 = 0; k1 < 8; ++k1)
             {
-                const int newI = i + DI[k];
-                const int newJ = j + DJ[k];
-                if(newI < H && newJ < W)
+                for(int k2 = 0; k2 < 8; ++k2)
                 {
-                    const QColor& cur = theImage.pixelColor(newJ, newI);
-                    r += cur.red();
-                    g += cur.green();
-                    b += cur.blue();
+                    const int newI = i + k1;
+                    const int newJ = j + k2;
+                    if(newI < H && newJ < W)
+                    {
+                        const QColor& cur = theImage.pixelColor(newJ, newI);
+                        r += cur.red();
+                        g += cur.green();
+                        b += cur.blue();
+                    }
                 }
-
             }
 
-            r >>= 2;
-            g >>= 2;
-            b >>= 2;
-            for(int k = 0; k < 4; ++k)
+            r >>= 6;
+            g >>= 6;
+            b >>= 6;
+            for(int k1 = 0; k1 < 8; ++k1)
             {
-                const int newI = i + DI[k];
-                const int newJ = j + DJ[k];
-                if(newI < H && newJ < W)
+                for(int k2 = 0; k2 < 8; ++k2)
                 {
-                    const QColor newColor = QColor(r, g, b);
-                    theImage.setPixelColor(newJ, newI, newColor);
+                    const int newI = i + k1;
+                    const int newJ = j + k2;
+                    if(newI < H && newJ < W)
+                    {
+                        const QColor newColor = QColor(r, g, b);
+                        theImage.setPixelColor(newJ, newI, newColor);
+                    }
                 }
-
             }
 
         }
